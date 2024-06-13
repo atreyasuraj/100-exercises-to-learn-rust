@@ -1,3 +1,8 @@
+use std::fmt::Pointer;
+use std::io::empty;
+use std::os::macos::raw::stat;
+
+
 struct Ticket {
     title: String,
     description: String,
@@ -16,8 +21,44 @@ impl Ticket {
     // You'll have to use what you learned in the previous exercises,
     // as well as some `String` methods. Use the documentation of Rust's standard library
     // to find the most appropriate options -> https://doc.rust-lang.org/std/string/struct.String.html
+
+    fn validate_title(title: &String) {
+        if title.is_empty() {
+            panic!("Title cannot be empty");
+        }
+
+        if title.len() > 50 {
+            panic!("Title cannot be longer than 50 bytes")
+        }
+    }
+
+    fn validate_description(description: &String){
+        if description.is_empty() {
+            panic!("Description cannot be empty")
+        }
+
+        if description.chars().count() > 500 {
+            panic!("Description cannot be longer than 500 bytes")
+        }
+    }
+    fn validate_status(status: &String){
+
+        if status.is_empty(){
+            panic!("Status cannot be empty")
+        }
+
+        if !status.contains("To-Do") &&
+            !status.contains("In Progress") &&
+            !status.contains("Done") {
+            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed")
+        }
+    }
+
     fn new(title: String, description: String, status: String) -> Self {
-        todo!();
+        Self::validate_title(&title);
+        Self::validate_description(&description);
+        Self::validate_status(&status);
+
         Self {
             title,
             description,
